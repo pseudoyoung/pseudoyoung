@@ -389,19 +389,27 @@ showFact();
 document.getElementById('new-fact-btn').addEventListener('click', showFact);
 
 // ── Weather ─────────────────────────────────────────────────────────────────
+// wttr.in uses 3-digit WMO-style codes (113, 116, 200, etc.)
 function weatherIconFor(code) {
-  if (code <= 3)  return '☀️';
-  if (code <= 9)  return '🌤️';
-  if (code <= 12) return '🌫️';
-  if (code <= 19) return '🌧️';
-  if (code <= 29) return '⛈️';
-  if (code <= 39) return '🌬️';
-  if (code <= 49) return '🌫️';
-  if (code <= 59) return '🌧️';
-  if (code <= 69) return '🌨️';
-  if (code <= 79) return '❄️';
-  if (code <= 84) return '🌧️';
-  if (code <= 99) return '⛈️';
+  if (code === 113) return '☀️';
+  if (code === 116) return '⛅';
+  if (code === 119) return '☁️';
+  if (code === 122) return '☁️';
+  if (code === 143 || code === 248 || code === 260) return '🌫️';
+  if (code === 176 || code === 293 || code === 296 || code === 299 ||
+      code === 302 || code === 305 || code === 308 ||
+      code === 353 || code === 356 || code === 359) return '🌧️';
+  if (code === 179 || code === 182 || code === 185 ||
+      code === 317 || code === 320 ||
+      code === 362 || code === 365) return '🌨️';
+  if (code === 200 || code === 386 || code === 389 ||
+      code === 392 || code === 395) return '⛈️';
+  if (code === 227 || code === 230 || code === 323 || code === 326 ||
+      code === 329 || code === 332 || code === 335 || code === 338 ||
+      code === 368 || code === 371) return '❄️';
+  if (code === 263 || code === 266 || code === 281 || code === 284 ||
+      code === 311 || code === 314) return '🌦️';
+  if (code === 350 || code === 374 || code === 377) return '🧊';
   return '🌈';
 }
 
@@ -435,14 +443,15 @@ if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
     pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
     ()  => {
-      // fallback — no location permission
       document.getElementById('weather-icon').textContent = '🌍';
-      document.getElementById('weather-desc').textContent = 'Allow location for your weather!';
+      document.getElementById('weather-desc').textContent = 'Allow location to see your weather!';
+      document.getElementById('weather-temp').textContent = '';
     },
     { timeout: 8000 }
   );
 } else {
-  document.getElementById('weather-desc').textContent = 'Weather not supported in this browser.';
+  document.getElementById('weather-icon').textContent = '🌍';
+  document.getElementById('weather-desc').textContent = 'Weather not available in this browser.';
 }
 
 // ── Ask Me — Web Speech API ─────────────────────────────────────────────────
@@ -450,25 +459,39 @@ const askBtn      = document.getElementById('ask-btn');
 const askStatus   = document.getElementById('ask-status');
 const askResponse = document.getElementById('ask-response');
 
-// Simple kid-friendly Q&A
+// Kid-friendly Q&A — matched by keyword so phrasing doesn't have to be exact
 const answers = [
-  { q: /how many planets/i,        a: "There are 8 planets in our solar system! 🪐 Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune!" },
-  { q: /why is the sky blue/i,     a: "The sky looks blue because sunlight bounces off the air in tiny ways that make blue light spread all around! 🌀" },
-  { q: /how do birds fly/i,        a: "Birds flap their wings to push air down, which lifts them up — kind of like swimming through the air! 🐦" },
-  { q: /why do we sleep/i,         a: "We sleep so our brain and body can rest and grow strong. Dreams happen while you sleep! 😴✨" },
-  { q: /how big is the sun/i,      a: "The Sun is SO big — about 1 million Earths could fit inside it! 🌟" },
-  { q: /what is the biggest animal/i, a: "The blue whale is the biggest animal ever! It can be as long as three school buses! 🐋" },
-  { q: /why is grass green/i,      a: "Grass has something called chlorophyll inside it that captures sunlight — and chlorophyll is green! 🌿" },
-  { q: /how are rainbows made/i,   a: "When sunlight shines through water drops, it splits into all the colors — like a prism! 🌈" },
-  { q: /how many stars/i,          a: "There are more stars in the universe than grains of sand on all the beaches on Earth! 🌠" },
-  { q: /why do cats purr/i,        a: "Cats purr when they're happy or comfortable. It's like their version of humming! 🐱" },
-  { q: /what do dinosaurs eat/i,   a: "Some dinosaurs ate plants, some ate meat, and some ate both — just like people today! 🦕" },
-  { q: /joke/i,                    a: "Why did the math book look so sad? Because it had too many problems! 😄" },
+  { q: /planet/i,              a: "There are 8 planets in our solar system! 🪐 Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune!" },
+  { q: /sky.*blue|blue.*sky/i, a: "The sky looks blue because sunlight bounces off tiny air particles and blue light scatters the most! 🌀" },
+  { q: /bird.*fly|fly.*bird/i, a: "Birds flap their wings to push air down, which lifts them up — kind of like swimming through the air! 🐦" },
+  { q: /sleep|tired/i,         a: "We sleep so our brain and body can rest and grow strong. Cool dreams happen while you sleep! 😴✨" },
+  { q: /sun/i,                 a: "The Sun is SO big — about 1 million Earths could fit inside it! 🌟" },
+  { q: /biggest animal|largest animal/i, a: "The blue whale is the biggest animal ever! It's as long as three school buses! 🐋" },
+  { q: /grass.*green|green.*grass/i, a: "Grass has something called chlorophyll that captures sunlight — and chlorophyll is green! 🌿" },
+  { q: /rainbow/i,             a: "When sunlight shines through raindrops it splits into all the colours — red, orange, yellow, green, blue, and purple! 🌈" },
+  { q: /star/i,                a: "There are more stars in the universe than grains of sand on all the beaches on Earth! 🌠" },
+  { q: /cat.*purr|purr/i,      a: "Cats purr when they're happy or comfortable. It's like their version of humming! 🐱" },
+  { q: /dinosaur/i,            a: "Some dinosaurs ate plants, some ate meat, and some ate both — just like people today! 🦕" },
+  { q: /joke/i,                a: "Why did the math book look so sad? Because it had too many problems! 😄" },
+  { q: /color.*see|see.*color|how many color/i, a: "Humans can see about 10 million different colours! Dogs can only see a few. 🎨" },
+  { q: /moon/i,                a: "The Moon is about 239,000 miles away from Earth. Astronauts walked on it in 1969! 🌕" },
+  { q: /thunder|lightning/i,   a: "Lightning is a giant spark of electricity in the sky. Thunder is the sound it makes — like a big snap! ⚡" },
+  { q: /volcano/i,             a: "A volcano is a mountain with a hole where super hot melted rock called lava can pour out! 🌋" },
+  { q: /ocean|sea/i,           a: "The ocean covers more than 70% of Earth! Most of it hasn't even been explored yet! 🌊" },
+  { q: /flower.*grow|grow.*flower|plant grow/i, a: "Plants use sunlight, water, and air to make their own food and grow — like tiny little factories! 🌱" },
+  { q: /fish.*breathe|breathe.*water/i, a: "Fish have gills that pull oxygen right out of the water — like how our lungs use air! 🐟" },
+  { q: /spider/i,              a: "Spiders make silk from their body to spin webs. Spider silk is stronger than steel by weight! 🕷️" },
+  { q: /hello|hi|hey/i,        a: "Hello! I'm so happy you're here! Ask me anything — I love questions! 😊" },
+  { q: /how old|age/i,         a: "Earth is about 4.5 billion years old — that's SO much older than dinosaurs! 🌍" },
+  { q: /robot|computer/i,      a: "Computers and robots follow instructions written by people called programmers. Maybe you could write code one day! 🤖" },
+  { q: /why do we eat|food|hungry/i, a: "Food gives our body energy — like petrol in a car! Different foods help different parts of our body! 🍎" },
+  { q: /love you|you're great|you're awesome/i, a: "Aww, I love you too! You're super smart for asking great questions! ⭐" },
 ];
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 function speak(text) {
+  window.speechSynthesis.cancel(); // stop any currently speaking voice first
   const utter = new SpeechSynthesisUtterance(text);
   utter.rate  = 0.9;
   utter.pitch = 1.2;
@@ -486,12 +509,22 @@ if (SpeechRecognition) {
   const recognition = new SpeechRecognition();
   recognition.lang = 'en-US';
   recognition.interimResults = false;
+  recognition.continuous = false;
+  let isListening = false; // guard against double-clicks
 
   askBtn.addEventListener('click', () => {
+    if (isListening) return; // already running — ignore extra taps
+    isListening = true;
     askBtn.classList.add('listening');
     askStatus.textContent = '🎙️ Listening… ask your question!';
     askResponse.style.display = 'none';
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (err) {
+      // recognition already started — reset state
+      isListening = false;
+      askBtn.classList.remove('listening');
+    }
   });
 
   recognition.addEventListener('result', (e) => {
@@ -504,10 +537,12 @@ if (SpeechRecognition) {
   });
 
   recognition.addEventListener('end', () => {
+    isListening = false;
     askBtn.classList.remove('listening');
   });
 
   recognition.addEventListener('error', (e) => {
+    isListening = false;
     askBtn.classList.remove('listening');
     askStatus.textContent = e.error === 'not-allowed'
       ? '🚫 Please allow microphone access!'
