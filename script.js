@@ -90,7 +90,7 @@
       alt: "Kitten in a low crouch, eyes laser-focused on something off camera.",
       body:
         "This is the Look. The Look comes right before three laps of the " +
-        "apartment, one rug skid, and a dramatic dive under the bed.",
+        "house, one rug skid, and a dramatic dive under the bed.",
     },
     {
       id: "2026-04-11-tour",
@@ -143,18 +143,19 @@
       alt: "Edie curled up in a patch of sunlight on the floor.",
       body:
         "Sundays are for sunbeams. She found the one square foot of " +
-        "afternoon sun in the whole apartment and claimed it by divine right.",
+        "afternoon sun in the whole house and claimed it by divine right.",
     },
     {
-      id: "2026-04-21-window",
+      id: "2026-04-21-tail-chase",
       taken: "2026-04-21T18:20:52",
       image: "images/13-window-watching.jpg",
-      title: "Window Watching",
-      alt: "Edie by a window, ears perked, watching something outside.",
+      title: "The Great Tail Expedition",
+      alt: "Edie mid-spin, eyes locked onto her own tail.",
       body:
-        "There is a bird. She knows the bird. The bird knows her. Every " +
-        "evening at six, they meet at the window and stare. Neither has " +
-        "blinked first in four days.",
+        "Today she discovered her tail — and, more importantly, that it " +
+        "follows her. What ensued was four minutes of high-speed circular " +
+        "investigation, one triumphant pounce, and a small betrayed yelp " +
+        "when she caught it. Tail: 1. Edie: 0. Rematch tomorrow.",
     },
     {
       id: "2026-04-22-snuggles",
