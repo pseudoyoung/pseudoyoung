@@ -93,14 +93,17 @@
         "house, one rug skid, and a dramatic dive under the bed.",
     },
     {
-      id: "2026-04-11-tour",
+      id: "2026-04-11-longing",
       taken: "2026-04-11T15:23:55",
       image: "images/08-official-house-tour.jpg",
-      title: "Official House Tour, Chapter 1",
-      alt: "Edie on the floor, looking up inquisitively.",
+      title: "The Longing Stare",
+      alt: "Edie gazing up with enormous, pleading eyes.",
       body:
-        "Today she discovered that if she stands at the door and yells, " +
-        "the door stays closed. She is undeterred. Tomorrow she tries again.",
+        "Every time we pick up keys, she deploys The Look — huge eyes, " +
+        "slow blink, tail curled into a single heartbreaking question mark. " +
+        "We are gone for twenty minutes, tops. She stares as if we are " +
+        "boarding a ship. The guilt is immense. The errand still has to " +
+        "get done.",
     },
     {
       id: "2026-04-18-two-week",
