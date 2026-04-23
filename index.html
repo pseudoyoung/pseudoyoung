@@ -3,560 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Fun Dashboard ⭐</title>
-  <style>
-    /* ── Base ── */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 30%, #a1c4fd 70%, #c2e9fb 100%);
-      min-height: 100vh;
-      padding: 16px;
-    }
-
-    /* ── Header ── */
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header h1 {
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      color: #fff;
-      text-shadow: 3px 3px 0 #ff6b6b, 6px 6px 0 #ffd93d;
-      letter-spacing: 2px;
-    }
-    header p {
-      font-size: 1.1rem;
-      color: #fff;
-      margin-top: 4px;
-      text-shadow: 1px 1px 0 rgba(0,0,0,.2);
-    }
-
-    /* ── Grid ── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    /* ── Cards ── */
-    .card {
-      background: rgba(255,255,255,.88);
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,.12);
-      backdrop-filter: blur(6px);
-    }
-    .card h2 {
-      font-size: 1.25rem;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #444;
-    }
-
-    /* ── Search ── */
-    #search-form {
-      display: flex;
-      gap: 8px;
-    }
-    #search-input {
-      flex: 1;
-      font-size: 1.1rem;
-      padding: 10px 16px;
-      border: 3px solid #a1c4fd;
-      border-radius: 50px;
-      outline: none;
-      transition: border-color .2s;
-    }
-    #search-input:focus { border-color: #ff6b6b; }
-    #search-btn {
-      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: transform .15s;
-    }
-    #search-btn:active { transform: scale(.95); }
-
-    /* ── Big Link Buttons ── */
-    .btn-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .big-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 18px 10px;
-      border-radius: 20px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #fff;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform .15s, box-shadow .15s;
-      box-shadow: 0 4px 14px rgba(0,0,0,.18);
-      text-align: center;
-    }
-    .big-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 22px rgba(0,0,0,.22); }
-    .big-btn:active { transform: scale(.97); }
-    .big-btn .icon { font-size: 2.2rem; }
-
-    .btn-netflix  { background: linear-gradient(135deg, #e50914, #831010); }
-    .btn-disney   { background: linear-gradient(135deg, #0063e5, #003a8a); }
-    .btn-pbskids  { background: linear-gradient(135deg, #00aa5b, #006636); }
-    .btn-youtube  { background: linear-gradient(135deg, #ff0000, #990000); }
-
-    /* ── Drawing Channels ── */
-    .channel-list { display: flex; flex-direction: column; gap: 10px; }
-    .channel-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      border-radius: 16px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #fff;
-      transition: transform .15s;
-      box-shadow: 0 3px 10px rgba(0,0,0,.15);
-    }
-    .channel-btn:hover { transform: translateX(4px); }
-    .channel-btn .icon { font-size: 1.6rem; }
-    .ch1 { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .ch2 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    .ch3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-    .ch4 { background: linear-gradient(135deg, #fa709a, #fee140); }
-
-    /* ── Weather ── */
-    #weather-display {
-      text-align: center;
-      padding: 10px 0;
-    }
-    #weather-icon   { font-size: 4rem; }
-    #weather-temp   { font-size: 2.5rem; font-weight: 700; color: #ff6b6b; }
-    #weather-desc   { font-size: 1rem; color: #666; margin-top: 4px; }
-    #weather-loc    { font-size: 0.85rem; color: #999; margin-top: 2px; }
-    #weather-error  { color: #aaa; font-size: 0.9rem; }
-
-    /* ── Fun Facts ── */
-    #fact-box {
-      background: linear-gradient(135deg, #ffecd2, #fcb69f);
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      font-size: 1rem;
-      color: #555;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.5;
-    }
-    #new-fact-btn {
-      margin-top: 12px;
-      background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      padding: 10px 24px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      transition: transform .15s;
-    }
-    #new-fact-btn:active { transform: scale(.97); }
-
-    /* ── Ask Me (Voice) ── */
-    #ask-card { grid-column: 1 / -1; }
-    #ask-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-    }
-    #ask-btn {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 32px rgba(102,126,234,.5);
-      transition: transform .15s, box-shadow .15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
-    #ask-btn .mic { font-size: 2.8rem; }
-    #ask-btn:hover { transform: scale(1.07); box-shadow: 0 12px 40px rgba(102,126,234,.6); }
-    #ask-btn.listening {
-      animation: pulse 1s infinite;
-      background: linear-gradient(135deg, #ff6b6b, #ffd93d);
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 0 0 rgba(255,107,107,.5); }
-      50%      { box-shadow: 0 0 0 20px rgba(255,107,107,0); }
-    }
-    #ask-status {
-      font-size: 1rem;
-      color: #888;
-      min-height: 24px;
-      text-align: center;
-    }
-    #ask-response {
-      background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
-      border-radius: 16px;
-      padding: 14px 20px;
-      font-size: 1rem;
-      color: #444;
-      max-width: 600px;
-      text-align: center;
-      line-height: 1.6;
-      min-height: 50px;
-      display: none;
-      width: 100%;
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      color: rgba(255,255,255,.7);
-      font-size: 0.8rem;
-    }
-  </style>
+  <title>The Edie Diaries 🐾 — A blog about our kitten</title>
+  <meta name="description" content="Photos, milestones, and comments from the first weeks of life with Edie — a little tabby girl who came home at 9 weeks old." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E🐾%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
-
-<header>
-  <h1>⭐ My Fun Dashboard ⭐</h1>
-  <p>Hello! What do you want to explore today?</p>
-</header>
-
-<div class="grid">
-
-  <!-- Search -->
-  <div class="card">
-    <h2>🔍 Kid-Safe Search</h2>
-    <form id="search-form">
-      <input id="search-input" type="text" placeholder="Search for anything..." autocomplete="off" />
-      <button id="search-btn" type="submit">Go!</button>
-    </form>
-  </div>
-
-  <!-- Weather -->
-  <div class="card">
-    <h2>🌤️ Weather Right Now</h2>
-    <div id="weather-display">
-      <div id="weather-icon">⏳</div>
-      <div id="weather-temp"></div>
-      <div id="weather-desc">Loading weather...</div>
-      <div id="weather-loc"></div>
-      <div id="weather-error"></div>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#top">🐾 The Edie Diaries</a>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#timeline">Timeline</a></li>
+        <li><a href="#guestbook">Guestbook</a></li>
+      </ul>
+    </nav>
+    <div class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow">Est. April 5, 2026 · 9 weeks old on gotcha day</p>
+        <h1>Meet Edie.</h1>
+        <p class="lede">
+          She is two pounds of opinion, four very white mittens, and one
+          motor that has not stopped purring since the moment we opened
+          her carrier. This is the living scrapbook of her first days at
+          home — the naps, the zoomies, and the slow, careful business
+          of becoming a cat.
+        </p>
+        <p class="meta">Follow along, leave a comment on any photo, and say hi in the guestbook.</p>
+      </div>
     </div>
+  </header>
+
+  <main>
+    <section id="about" class="about">
+      <h2>About Edie</h2>
+      <div class="about-grid">
+        <div>
+          <h3>Name</h3>
+          <p>Edie (rhymes with "ready," refuses to answer to it).</p>
+        </div>
+        <div>
+          <h3>Gotcha day</h3>
+          <p>Sunday, April 5, 2026 — she came home at 9 weeks old.</p>
+        </div>
+        <div>
+          <h3>Hobbies</h3>
+          <p>Hunting ankles, auditing laundry baskets, perfecting the loaf.</p>
+        </div>
+        <div>
+          <h3>Currently</h3>
+          <p>Learning the difference between the couch (yes) and the kitchen counter (absolutely not).</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="timeline">
+      <header class="section-header">
+        <h2>The Timeline</h2>
+        <p>Photos are arranged by the date they were taken — pulled straight from the metadata of the phone that took them. Tap any picture to open a larger view, and scroll to the bottom of each post to leave a note.</p>
+      </header>
+      <ol class="timeline-list" id="timeline-list">
+        <!-- Populated by script.js from the POSTS array. -->
+      </ol>
+    </section>
+
+    <section id="guestbook" class="guestbook">
+      <h2>Guestbook</h2>
+      <p class="muted">Not tied to a specific picture? Sign Edie's guestbook here.</p>
+      <form class="comment-form" data-post-id="__guestbook__" autocomplete="off">
+        <div class="row">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required maxlength="40" placeholder="Your name" />
+          </label>
+        </div>
+        <label>
+          <span>Message</span>
+          <textarea name="body" required maxlength="600" rows="3" placeholder="Say hi to Edie…"></textarea>
+        </label>
+        <button type="submit">Post</button>
+      </form>
+      <ul class="comment-list" data-post-id="__guestbook__"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 · Made with catnip and a lot of lint rollers.</p>
+    <p class="muted small">Comments are stored locally in your browser, so what you write is visible only to you. We'll wire up a real backend once Edie learns to approve pull requests.</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <img alt="" id="lightbox-img" />
+    <p class="lightbox-caption" id="lightbox-caption"></p>
   </div>
 
-  <!-- Streaming -->
-  <div class="card">
-    <h2>🎬 Watch Shows</h2>
-    <div class="btn-grid">
-      <a class="big-btn btn-netflix" href="https://www.netflix.com/kids" target="_blank" rel="noopener">
-        <span class="icon">🍿</span>Netflix Kids
-      </a>
-      <a class="big-btn btn-disney" href="https://www.disneyplus.com" target="_blank" rel="noopener">
-        <span class="icon">🏰</span>Disney+
-      </a>
-      <a class="big-btn btn-pbskids" href="https://pbskids.org" target="_blank" rel="noopener">
-        <span class="icon">🐸</span>PBS Kids
-      </a>
-      <a class="big-btn btn-youtube" href="https://www.youtube.com/kids" target="_blank" rel="noopener">
-        <span class="icon">▶️</span>YouTube Kids
-      </a>
-    </div>
-  </div>
-
-  <!-- Drawing Channels -->
-  <div class="card">
-    <h2>🎨 Learn to Draw!</h2>
-    <div class="channel-list">
-      <a class="channel-btn ch1"
-         href="https://www.youtube.com/@ArtforKidsHub"
-         target="_blank" rel="noopener">
-        <span class="icon">🖌️</span>Art for Kids Hub
-      </a>
-      <a class="channel-btn ch2"
-         href="https://www.youtube.com/@DrawSoCute"
-         target="_blank" rel="noopener">
-        <span class="icon">✏️</span>Draw So Cute
-      </a>
-      <a class="channel-btn ch3"
-         href="https://www.youtube.com/results?search_query=how+to+draw+for+kids"
-         target="_blank" rel="noopener">
-        <span class="icon">🌈</span>How To Draw for Kids
-      </a>
-      <a class="channel-btn ch4"
-         href="https://www.youtube.com/@EasyDrawingTutorials"
-         target="_blank" rel="noopener">
-        <span class="icon">⭐</span>Easy Drawing Tutorials
-      </a>
-    </div>
-  </div>
-
-  <!-- Fun Facts -->
-  <div class="card">
-    <h2>🦁 Cool Animal Facts</h2>
-    <div id="fact-box">Loading a fun fact...</div>
-    <button id="new-fact-btn">✨ New Fact!</button>
-  </div>
-
-  <!-- Ask Me / Voice -->
-  <div class="card" id="ask-card">
-    <h2>🎤 Ask Me Anything!</h2>
-    <div id="ask-area">
-      <button id="ask-btn">
-        <span class="mic">🎙️</span>
-        <span>Ask Me!</span>
-      </button>
-      <div id="ask-status">Press the button and ask a question!</div>
-      <div id="ask-response"></div>
-    </div>
-  </div>
-
-</div>
-
-<footer>Made with ❤️ for curious kids everywhere</footer>
-
-<script>
-// ── Kid-Safe Search ─────────────────────────────────────────────────────────
-document.getElementById('search-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  window.open('https://www.kidzsearch.com/search?q=' + encodeURIComponent(q), '_blank', 'noopener');
-});
-
-// ── Fun Facts ───────────────────────────────────────────────────────────────
-const facts = [
-  "A group of flamingos is called a flamboyance! 🦩",
-  "Elephants are the only animals that can't jump! 🐘",
-  "A snail can sleep for three years! 🐌",
-  "Butterflies taste with their feet! 🦋",
-  "A day on Venus is longer than a year on Venus! 🪐",
-  "Honey never goes bad — bees are amazing! 🍯",
-  "Octopuses have three hearts! 🐙",
-  "The world's largest animal is the blue whale! 🐋",
-  "A group of owls is called a parliament! 🦉",
-  "Cows have best friends and get sad when separated! 🐄",
-  "Dolphins have names for each other! 🐬",
-  "A hummingbird weighs less than a penny! 🐦",
-  "Sea otters hold hands when they sleep so they don't drift apart! 🦦",
-  "Wombats make cube-shaped poop — no other animal does! 🟫",
-  "A baby kangaroo is called a joey and is the size of a jellybean! 🦘",
-  "Sharks are older than trees — they've been around for 400 million years! 🦈",
-  "Cats can make over 100 different vocal sounds! 🐱",
-  "Dogs have a sense of smell 40 times better than humans! 🐶",
-  "A group of cats is called a clowder! 🐈",
-  "Penguins propose to their mates with a pebble! 🐧",
-];
-let lastFact = -1;
-function showFact() {
-  let idx;
-  do { idx = Math.floor(Math.random() * facts.length); } while (idx === lastFact);
-  lastFact = idx;
-  document.getElementById('fact-box').textContent = facts[idx];
-}
-showFact();
-document.getElementById('new-fact-btn').addEventListener('click', showFact);
-
-// ── Weather ─────────────────────────────────────────────────────────────────
-function weatherIconFor(code) {
-  if (code === 113) return '☀️';
-  if (code === 116) return '⛅';
-  if (code === 119) return '☁️';
-  if (code === 122) return '☁️';
-  if (code === 143 || code === 248 || code === 260) return '🌫️';
-  if (code === 176 || code === 293 || code === 296 || code === 299 ||
-      code === 302 || code === 305 || code === 308 ||
-      code === 353 || code === 356 || code === 359) return '🌧️';
-  if (code === 179 || code === 182 || code === 185 ||
-      code === 317 || code === 320 ||
-      code === 362 || code === 365) return '🌨️';
-  if (code === 200 || code === 386 || code === 389 ||
-      code === 392 || code === 395) return '⛈️';
-  if (code === 227 || code === 230 || code === 323 || code === 326 ||
-      code === 329 || code === 332 || code === 335 || code === 338 ||
-      code === 368 || code === 371) return '❄️';
-  if (code === 263 || code === 266 || code === 281 || code === 284 ||
-      code === 311 || code === 314) return '🌦️';
-  if (code === 350 || code === 374 || code === 377) return '🧊';
-  return '🌈';
-}
-
-function loadWeather(lat, lon) {
-  const url = `https://wttr.in/${lat},${lon}?format=j1`;
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
-      const current = data.current_condition[0];
-      const tempC   = parseInt(current.temp_C);
-      const tempF   = parseInt(current.temp_F);
-      const desc    = current.weatherDesc[0].value;
-      const code    = parseInt(current.weatherCode);
-      const area    = data.nearest_area[0];
-      const city    = area.areaName[0].value;
-      const country = area.country[0].value;
-
-      document.getElementById('weather-icon').textContent = weatherIconFor(code);
-      document.getElementById('weather-temp').textContent = `${tempF}°F  /  ${tempC}°C`;
-      document.getElementById('weather-desc').textContent = desc;
-      document.getElementById('weather-loc').textContent  = `📍 ${city}, ${country}`;
-    })
-    .catch(() => {
-      document.getElementById('weather-desc').textContent = '';
-      document.getElementById('weather-icon').textContent = '🌈';
-      document.getElementById('weather-error').textContent = 'Could not load weather. Check your internet!';
-    });
-}
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(
-    pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
-    ()  => {
-      document.getElementById('weather-icon').textContent = '🌍';
-      document.getElementById('weather-desc').textContent = 'Allow location to see your weather!';
-      document.getElementById('weather-temp').textContent = '';
-    },
-    { timeout: 8000 }
-  );
-} else {
-  document.getElementById('weather-icon').textContent = '🌍';
-  document.getElementById('weather-desc').textContent = 'Weather not available in this browser.';
-}
-
-// ── Ask Me — Web Speech API ─────────────────────────────────────────────────
-const askBtn      = document.getElementById('ask-btn');
-const askStatus   = document.getElementById('ask-status');
-const askResponse = document.getElementById('ask-response');
-
-const answers = [
-  { q: /planet/i,              a: "There are 8 planets in our solar system! 🪐 Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune!" },
-  { q: /sky.*blue|blue.*sky/i, a: "The sky looks blue because sunlight bounces off tiny air particles and blue light scatters the most! 🌀" },
-  { q: /bird.*fly|fly.*bird/i, a: "Birds flap their wings to push air down, which lifts them up — kind of like swimming through the air! 🐦" },
-  { q: /sleep|tired/i,         a: "We sleep so our brain and body can rest and grow strong. Cool dreams happen while you sleep! 😴✨" },
-  { q: /sun/i,                 a: "The Sun is SO big — about 1 million Earths could fit inside it! 🌟" },
-  { q: /biggest animal|largest animal/i, a: "The blue whale is the biggest animal ever! It's as long as three school buses! 🐋" },
-  { q: /grass.*green|green.*grass/i, a: "Grass has something called chlorophyll that captures sunlight — and chlorophyll is green! 🌿" },
-  { q: /rainbow/i,             a: "When sunlight shines through raindrops it splits into all the colours — red, orange, yellow, green, blue, and purple! 🌈" },
-  { q: /star/i,                a: "There are more stars in the universe than grains of sand on all the beaches on Earth! 🌠" },
-  { q: /cat.*purr|purr/i,      a: "Cats purr when they're happy or comfortable. It's like their version of humming! 🐱" },
-  { q: /dinosaur/i,            a: "Some dinosaurs ate plants, some ate meat, and some ate both — just like people today! 🦕" },
-  { q: /joke/i,                a: "Why did the math book look so sad? Because it had too many problems! 😄" },
-  { q: /color.*see|see.*color|how many color/i, a: "Humans can see about 10 million different colours! Dogs can only see a few. 🎨" },
-  { q: /moon/i,                a: "The Moon is about 239,000 miles away from Earth. Astronauts walked on it in 1969! 🌕" },
-  { q: /thunder|lightning/i,   a: "Lightning is a giant spark of electricity in the sky. Thunder is the sound it makes — like a big snap! ⚡" },
-  { q: /volcano/i,             a: "A volcano is a mountain with a hole where super hot melted rock called lava can pour out! 🌋" },
-  { q: /ocean|sea/i,           a: "The ocean covers more than 70% of Earth! Most of it hasn't even been explored yet! 🌊" },
-  { q: /flower.*grow|grow.*flower|plant grow/i, a: "Plants use sunlight, water, and air to make their own food and grow — like tiny little factories! 🌱" },
-  { q: /fish.*breathe|breathe.*water/i, a: "Fish have gills that pull oxygen right out of the water — like how our lungs use air! 🐟" },
-  { q: /spider/i,              a: "Spiders make silk from their body to spin webs. Spider silk is stronger than steel by weight! 🕷️" },
-  { q: /hello|hi|hey/i,        a: "Hello! I'm so happy you're here! Ask me anything — I love questions! 😊" },
-  { q: /how old|age/i,         a: "Earth is about 4.5 billion years old — that's SO much older than dinosaurs! 🌍" },
-  { q: /robot|computer/i,      a: "Computers and robots follow instructions written by people called programmers. Maybe you could write code one day! 🤖" },
-  { q: /why do we eat|food|hungry/i, a: "Food gives our body energy — like petrol in a car! Different foods help different parts of our body! 🍎" },
-  { q: /love you|you're great|you're awesome/i, a: "Aww, I love you too! You're super smart for asking great questions! ⭐" },
-];
-
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-function speak(text) {
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.rate  = 0.9;
-  utter.pitch = 1.2;
-  window.speechSynthesis.speak(utter);
-}
-
-function findAnswer(transcript) {
-  for (const pair of answers) {
-    if (pair.q.test(transcript)) return pair.a;
-  }
-  return "Hmm, I don't know that one yet! Ask a grown-up, or try searching above! 🤔";
-}
-
-if (SpeechRecognition) {
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  recognition.continuous = false;
-  let isListening = false;
-
-  askBtn.addEventListener('click', () => {
-    if (isListening) return;
-    isListening = true;
-    askBtn.classList.add('listening');
-    askStatus.textContent = '🎙️ Listening… ask your question!';
-    askResponse.style.display = 'none';
-    try {
-      recognition.start();
-    } catch (err) {
-      isListening = false;
-      askBtn.classList.remove('listening');
-    }
-  });
-
-  recognition.addEventListener('result', (e) => {
-    const transcript = e.results[0][0].transcript;
-    askStatus.textContent = `You asked: "${transcript}"`;
-    const answer = findAnswer(transcript);
-    askResponse.textContent = answer;
-    askResponse.style.display = 'flex';
-    speak(answer);
-  });
-
-  recognition.addEventListener('end', () => {
-    isListening = false;
-    askBtn.classList.remove('listening');
-  });
-
-  recognition.addEventListener('error', (e) => {
-    isListening = false;
-    askBtn.classList.remove('listening');
-    askStatus.textContent = e.error === 'not-allowed'
-      ? '🚫 Please allow microphone access!'
-      : '😕 Could not hear you — try again!';
-  });
-
-} else {
-  askBtn.innerHTML = '<span class="mic">💬</span><span>Type a Question</span>';
-  askBtn.addEventListener('click', () => {
-    const q = prompt('What is your question?');
-    if (!q) return;
-    const answer = findAnswer(q);
-    askStatus.textContent = `You asked: "${q}"`;
-    askResponse.textContent = answer;
-    askResponse.style.display = 'flex';
-    speak(answer);
-  });
-}
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
